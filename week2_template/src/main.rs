@@ -21,7 +21,12 @@ trait Todo {
 
 impl Todo for Check {
     fn new(name: String, description: String) -> Self {
-        todo!()
+        // todo!()
+        Check {
+            name,
+            description,
+            done: false
+        }
     }
 
     fn to_string(&self, index: usize) -> String {
@@ -39,7 +44,12 @@ impl Todo for Check {
 
 impl Todo for Progress {
     fn new(name: String, description: String) -> Self {
-        todo!()
+        // todo!()
+        Progress {
+            name,
+            description,
+            progress: 0
+        }
     }
 
     fn to_string(&self, index: usize) -> String {
@@ -69,14 +79,19 @@ fn string_to_u8(input: String) -> Option<u8> {
 }
 
 fn create_todo<T: Todo>(todo_list: &mut Vec<T>) {
-    todo!()
+    // todo!()
+    println!("Name:");
+    let name = stdin();
+    println!("Description:");
+    let description = stdin();
+    let new_todo = T::new(name, description);
+    todo_list.push(new_todo);
 }
 
 fn main() {
     // There's cleaner way to write this code, but not now
     let mut check_list: Vec<Check> = Vec::new();
     let mut progress_list: Vec<Progress> = Vec::new();
-
     loop {
         println!("What do you want to do?");
         println!("1. Add new todo");
@@ -84,6 +99,35 @@ fn main() {
         println!("3. Show todo list");
         println!("4. Exit");
 
-        todo!()
+        // todo!()
+        let choice = stdin();
+        // choice = stdin();
+        match choice.as_str() {
+            "1" => {
+                println!("What kind of todo you want to add?");
+                println!("1. Check");
+                println!("2. Progress");
+                let choice = stdin();
+                match choice.as_str() {
+                    "1" => {
+                        create_todo(&mut check_list);
+                    },
+                    "2" => {
+                        create_todo(&mut progress_list);
+                    },
+                    _ => println!("invalid input")
+                }
+            },
+            "2" => {
+                println!("Which to do you want to edit? [1 - {}]", progress_list.len())
+            },
+            "3" => {
+
+            },
+            "4" => break,
+            _ => println!("invalid input")
+        };
+        
+            
     }
 }
