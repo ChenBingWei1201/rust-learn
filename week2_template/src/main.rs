@@ -14,6 +14,7 @@ trait Todo {
     fn new(name: String, description: String) -> Self;
 
     fn to_string(&self, index: usize) -> String;
+
     fn done(&self) -> bool;
 
     fn set_status(&mut self);
@@ -30,15 +31,22 @@ impl Todo for Check {
     }
 
     fn to_string(&self, index: usize) -> String {
-        todo!()
+        // todo!()
+        let status = if self.done() {"[x]"} else {"[ ]"};
+        format!(
+            "{}. {} {}:\n\t{}",
+            index, status, self.name, self.description
+        )
     }
 
     fn done(&self) -> bool {
-        todo!()
+        // todo!()
+        self.done
     }
 
     fn set_status(&mut self) {
         todo!()
+
     }
 }
 
@@ -53,11 +61,17 @@ impl Todo for Progress {
     }
 
     fn to_string(&self, index: usize) -> String {
-        todo!()
+        // todo!()
+        let status = if self.done() {"[x]"} else {"[ ]"};
+        format!(
+            "{}. {} {}:\n\t{}\n\tProgress:\t{}%",
+            index, status, self.name, self.description, self.progress
+        )
     }
 
     fn done(&self) -> bool {
-        todo!()
+        // todo!()
+        self.progress == 100
     }
 
     fn set_status(&mut self) {
@@ -101,7 +115,6 @@ fn main() {
 
         // todo!()
         let choice = stdin();
-        // choice = stdin();
         match choice.as_str() {
             "1" => {
                 println!("What kind of todo you want to add?");
@@ -119,10 +132,30 @@ fn main() {
                 }
             },
             "2" => {
-                println!("Which to do you want to edit? [1 - {}]", progress_list.len())
+                println!("Which to do you want to edit? [1 - {}]", progress_list.len());
+                let choice = stdin();
+                let todo_list_len = check_list.len() + progress_list.len();
+                match string_to_u8(choice) {
+                    Some(index) => {
+                        let index = index - 1;
+                        if index < todo_list_len as u8 {
+                            if index < progress_list.len() as u8{
+                                
+                            }
+                        }
+                    },
+                    None => println!("invalid input"),
+                }
+
             },
             "3" => {
+                for (index, check) in check_list.iter().enumerate() {
+                    println!("{}", check.to_string(index + 1));
+                }
 
+                for (index, progress) in progress_list.iter().enumerate() {
+                    println!("{}", progress.to_string(index + 1 + check_list.len()));
+                }
             },
             "4" => break,
             _ => println!("invalid input")
