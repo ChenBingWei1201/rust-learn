@@ -14,7 +14,7 @@ fn main() {
     node::append_child(&child2, &child4);
 
     algo::traverse_tree(&root, |node| {
-        println!("{}", node.borrow().data);
+
     });
 
     println!("{:?}", algo::depth_first_search(&root, 4));

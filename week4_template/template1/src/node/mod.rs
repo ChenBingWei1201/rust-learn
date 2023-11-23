@@ -16,7 +16,11 @@ pub struct Node<T> {
 #[allow(dead_code, unused_variables)]
 impl<T> Node<T> {
     pub fn new(data: T) -> Node<T> {
-        todo!()
+        Node {
+            data,
+            parent: None,
+            children: Vec::new(),
+        }
     }
 }
 
