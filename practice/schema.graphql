@@ -1,0 +1,28 @@
+
+
+
+
+type Mutation {
+	hello: MyObject!
+}
+
+type MyObject {
+	a: Int!
+	b: Int!
+	sum: Int!
+}
+
+type Query {
+	hello: MyObject!
+}
+
+
+type Subscription {
+	hello: Int!
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}

@@ -1,22 +1,44 @@
-// use serde::{Deserialize, Serialize};
-use mini_redis::{client, Result};
-use std::sync::Arc;
-use tokio::sync::Mutex;
-use tokio::sync::Mutex as AsyncMutex;
+use sqlx::{MySql, MySqlPool, Pool};
+use std::env::var;
+#[derive(Debug)]
+struct GQLEntry {
+    id: i32,
+    name: String,
+}
 
-// async fn print() {
-//     println!("Hello, world!");
-// }
+impl From<Entry> for GQLEntry {
+    fn from(value: Entry) -> Self {
+        Self {
+            id: value.id,
+            name: value.name,
+        }
+    
+    }
+}
+
+struct Entry {
+    id: i32,
+    name: String,
+}
 
 #[tokio::main]
-async fn main() {
-    // let f = print();
-    // f.await;
-    let mut client = Arc::new(AsyncMutex::new(client::connect("127.0.0.1:6379").await.unwrap()));
-    let data1 = client.lock().await.get("data1").await.unwrap();
-    tokio::spawn(async move {
-        client.lock().await.set("hello", "world".into()).await.unwrap();
-    });
-    // let data1 = client.get("data1").await.unwrap();
-    // println!("data1 = {:?}", data1);
+async fn main () {
+    dotenv::dotenv().ok();
+    let database_url = var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
+
+    let pool = MySqlPool::connect(&database_url)
+        .await
+        .unwrap();
+
+    let res = sqlx::query_as!(
+        Entry, 
+        "SELECT * FROM Table1 WHERE id = ?;",
+        0
+    )
+    .fetch_all(&pool)
+    .await
+    .unwrap();
+
+    let res: Vec<GQLEntry> = res.into_iter().map(|x| x.into()).collect();
+    println!("{:?}", res);
 }
