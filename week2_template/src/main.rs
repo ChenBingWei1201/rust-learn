@@ -45,8 +45,23 @@ impl Todo for Check {
     }
 
     fn set_status(&mut self) {
-        todo!()
+        // todo!()
+        loop {
+            println!("Set status to done? [y/n] ");
+            let input = stdin();
 
+            match input.as_str() {
+                "y" => {
+                    self.done = true;
+                    break;
+                }
+                "n" => {
+                    self.done = false;
+                    break;
+                }
+                _ => println!("Invalid input"),
+            }
+        }
     }
 }
 
@@ -75,7 +90,19 @@ impl Todo for Progress {
     }
 
     fn set_status(&mut self) {
-        todo!()
+        // todo!()
+        loop {
+            println!("Set status progress [0-100] ");
+            let input = stdin();
+
+            match string_to_u8(input) {
+                Some(progress) => {
+                    self.progress = progress;
+                    break;
+                }
+                None => println!("Invalid input"),
+            }
+        }
     }
 }
 
@@ -139,10 +166,17 @@ fn main() {
                     Some(index) => {
                         let index = index - 1;
                         if index < todo_list_len as u8 {
-                            if index < progress_list.len() as u8{
-                                
-                            }
+                            if index < check_list.len() as u8{
+                                let check = &mut check_list[index as usize]; // store as &mut
+                                check.set_status();
+                            } else {
+                                let progress = &mut progress_list[index as usize - check_list.len()];
+                                progress.set_status();
+                            } 
+                        } else {
+                            println!("invalid index");
                         }
+
                     },
                     None => println!("invalid input"),
                 }

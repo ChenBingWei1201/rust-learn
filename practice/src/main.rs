@@ -30,15 +30,14 @@ async fn main () {
         .await
         .unwrap();
 
-    let res = sqlx::query_as!(
-        Entry, 
-        "SELECT * FROM Table1 WHERE id = ?;",
-        0
+    let result = sqlx::query!(
+        r#"
+            INSERT INTO Table1 (name) VALUES (?);
+        "#,
+        "test"
     )
-    .fetch_all(&pool)
+    .execute(&pool)
     .await
     .unwrap();
-
-    let res: Vec<GQLEntry> = res.into_iter().map(|x| x.into()).collect();
-    println!("{:?}", res);
+    println!("{:?}", result);
 }
