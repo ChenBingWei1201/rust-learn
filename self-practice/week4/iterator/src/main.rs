@@ -1,6 +1,6 @@
 use std::iter::Iterator;
 
-struct  Counter {
+struct Counter {
     count: u32,
 }
 
@@ -12,7 +12,7 @@ impl Counter {
 
 impl Iterator for Counter {
     type Item = u32;
-    fn next(&mut self) -> Option<Self::Item>{
+    fn next(&mut self) -> Option<Self::Item> {
         if self.count == 0 {
             None
         } else {
